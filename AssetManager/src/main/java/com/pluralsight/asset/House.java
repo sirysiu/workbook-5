@@ -68,7 +68,7 @@ public class House extends Asset{
         sb.append(String.format("| Description      | %s\n", description));
         sb.append(String.format("| Date Acquired    | %s\n", dateAcquired));
         sb.append(String.format("| Original Cost    | %.2f\n", originalCost));
-        sb.append("+------------------+----------------------+");
+        sb.append("+------------------+----------------------+\n");
         return sb.toString();
     }
 
