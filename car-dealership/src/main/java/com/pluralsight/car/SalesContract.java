@@ -1,14 +1,19 @@
 package com.pluralsight.car;
 
 public class SalesContract extends Contract{
-    double salesTaxAmount;
-    double recordingFee;
-    double processingFee;
-    boolean finance;
+    private double salesTaxAmount;
+    private double recordingFee;
+    private  double processingFee;
+    private boolean isFinancing;
+    private double monthlyPayment;
+
+    public boolean isFinancing() {
+        return isFinancing;
+    }
 
     public double getSalesTaxAmount() {
-        return salesTaxAmount;
-    }
+        return salesTaxAmount ;
+     }
 
     public void setSalesTaxAmount(double salesTaxAmount) {
         this.salesTaxAmount = salesTaxAmount;
@@ -30,31 +35,60 @@ public class SalesContract extends Contract{
         this.processingFee = processingFee;
     }
 
-    public boolean isFinance() {
-        return finance;
-    }
-
-    public void setFinance(boolean finance) {
-        this.finance = finance;
-    }
-
-    public double getMonthlyPayment() {
-        return monthlyPayment;
-    }
 
     public void setMonthlyPayment(double monthlyPayment) {
         this.monthlyPayment = monthlyPayment;
     }
 
-    double monthlyPayment;
 
-
-    public SalesContract(String date, String customerName, String customerEmail, boolean vehicleSold, double monthlyPayment, boolean finance, double processingFee, double recordingFee, double salesTaxAmount) {
+    public SalesContract(String date, String customerName, String customerEmail, Vehicle vehicleSold , boolean isFinancing) {
         super(date, customerName, customerEmail, vehicleSold);
         this.monthlyPayment = monthlyPayment;
-        this.finance = finance;
         this.processingFee = processingFee;
-        this.recordingFee = recordingFee;
-        this.salesTaxAmount = salesTaxAmount;
+        this.recordingFee = 100;
+        this.salesTaxAmount = 0.05 * vehicleSold.getPrice();
+        if (vehicleSold.getPrice() < 10000) {
+            processingFee = 295;
+        } else {
+            processingFee = 295;
+        }
+        this.isFinancing = isFinancing;
+        if (isFinancing && vehicleSold.getPrice() >= 10000) {
+            double i = 0.425/12;
+            int month = 48;
+            monthlyPayment = (getTotalPrice() * 0.0425) / 12;
+        } else if (isFinancing && vehicleSold.getPrice() < 10000){
+            monthlyPayment = getTotalPrice() * Math.pow((1 + (0.0525/12)), 24) - getTotalPrice();
+        }
+    }
+    public Vehicle getVehicleSold() {
+        return vehicleSold;
+    }
+
+    @Override
+    public double getTotalPrice() {
+        return vehicleSold.getPrice() + recordingFee + processingFee + salesTaxAmount;
+    }
+
+    @Override
+    public double getMonthlyPayment() {
+     return Math.floor(monthlyPayment * 100) /100;
+    }
+
+    @Override
+    public String toString() {
+        return "SalesContract{" +
+                "salesTaxAmount=" + salesTaxAmount +
+                ", recordingFee=" + recordingFee +
+                ", processingFee=" + processingFee +
+                ", finance=" + isFinancing +
+                ", monthlyPayment=" + monthlyPayment +
+                ", date='" + date + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", customerEmail='" + customerEmail + '\'' +
+                ", vehicleSold=" + vehicleSold +
+                ", totalPrice=" + totalPrice +
+                ", monthlyPayment=" + monthlyPayment +
+                '}';
     }
 }

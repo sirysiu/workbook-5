@@ -1,20 +1,20 @@
 package com.pluralsight.car;
 
-public class Contract {
+public abstract class Contract {
     protected String date;
     protected String customerName;
     protected String customerEmail;
-    protected boolean vehicleSold;
+    protected Vehicle vehicleSold;
+    double totalPrice;
+    double monthlyPayment;
 
-    public Contract(String date, String customerName, String customerEmail, boolean vehicleSold) {
+
+    public Contract(String date, String customerName, String customerEmail, Vehicle vehicleSold) {
         this.date = date;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.vehicleSold = vehicleSold;
     }
-
-    double totalPrice;
-    double monthlyPayment;
 
     public String getDate() {
         return date;
@@ -39,12 +39,20 @@ public class Contract {
     public void setCustomerEmail(String customerEmail) {
         this.customerEmail = customerEmail;
     }
-
-    public boolean isVehicleSold() {
-        return vehicleSold;
+    @Override
+    public String toString() {
+        return "LeaseContract{" +
+                ", date='" + date + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", customerEmail='" + customerEmail + '\'' +
+                ", vehicleSold=" + vehicleSold.toString() +  // Make sure Vehicle also has a toString method
+                ", totalPrice=" + totalPrice +
+                ", monthlyPayment=" + monthlyPayment +
+                '}';
     }
 
-    public void setVehicleSold(boolean vehicleSold) {
-        this.vehicleSold = vehicleSold;
-    }
+
+    public abstract double getTotalPrice();
+
+    public abstract double getMonthlyPayment();
 }
