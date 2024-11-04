@@ -1,6 +1,8 @@
 package com.pluralsight.car;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -10,71 +12,73 @@ public class UserInterface {
 
   public UserInterface() {
   }
-    private void init() {
-      this.dealership = new DealershipFileManger().getDealership();
-    }
 
-    public void display() {
-      init();
-      boolean isRunning = true;
-      while (isRunning) {
-        menus();
-        String input = scanner.nextLine().trim();
-        switch (input) {
-          case "1":
-            processGetByPriceRequest();
-            break;
-          case "2":
-            processGetByMakeModelRequest();
-            break;
-          case "3":
-            processGetByYearRequest();
-            break;
-          case "4":
+  private void init() {
+    this.dealership = new DealershipFileManger().getDealership();
+  }
+
+  public void display() {
+    init();
+    boolean isRunning = true;
+    while (isRunning) {
+      menus();
+      String input = scanner.nextLine().trim();
+      switch (input) {
+        case "1":
+          processGetByPriceRequest();
+          break;
+        case "2":
+          processGetByMakeModelRequest();
+          break;
+        case "3":
+          processGetByYearRequest();
+          break;
+        case "4":
           processGetByColor();
-            break;
-          case "5":
-            processGetByMileageRequest();
-            break;
-          case "6":
-            processGetByType();
-            break;
-          case "7":
-            processAllVehiclesRequest();
-            break;
-          case "8":
-            processAddVehicleRequest();
-            break;
-          case "9":
-            processRemoveVehicleRequest();
-            break;
-          case "x", "X":
-            isRunning = false;
-        }
-
+          break;
+        case "5":
+          processGetByMileageRequest();
+          break;
+        case "6":
+          processGetByType();
+          break;
+        case "7":
+          processAllVehiclesRequest();
+          break;
+        case "8":
+          processAddVehicleRequest();
+          break;
+        case "9":
+          processRemoveVehicleRequest();
+          break;
+        case "0":
+          processSellOrLeaseVehicleRequest();
+          break;
+        case "x", "X":
+          isRunning = false;
       }
+
     }
+  }
 
-    private static void menus() {
-      System.out.println(ColorCodes.BLUE + "┌───────────────────────────────────────┐");
-      System.out.println(ColorCodes.BLUE + "│                Menu                   │");
-      System.out.println(ColorCodes.BLUE + "│         Please Enter an Option:       │");
-      System.out.println(ColorCodes.BLUE + "├───────────────────────────────────────┤");
-      System.out.println(ColorCodes.GREEN + "│ [1] Vehicle By Price                  │");
-      System.out.println(ColorCodes.GREEN + "│ [2] Vehicle By Make and Model         │");
-      System.out.println(ColorCodes.GREEN + "│ [3] Vehicle By Year                   │");
-      System.out.println(ColorCodes.GREEN + "│ [4] Vehicle By Color                  │");
-      System.out.println(ColorCodes.GREEN + "│ [5] Vehicle By Mileage                │");
-      System.out.println(ColorCodes.GREEN + "│ [6] Vehicle By Type                   │");
-      System.out.println(ColorCodes.GREEN + "│ [7] Show All                          │");
-      System.out.println(ColorCodes.GREEN + "│ [8] Add Vehicle                       │");
-      System.out.println(ColorCodes.GREEN + "│ [9] Remove Vehicle                    │");
-      System.out.println(ColorCodes.RED + "│ [x] Exit                              │");
-      System.out.println(ColorCodes.BLUE + "└───────────────────────────────────────┘" + ColorCodes.RESET);
-    }
-
-
-
+  private static void menus() {
+    System.out.println(ColorCodes.BLUE + "┌───────────────────────────────────────┐");
+    System.out.println(ColorCodes.BLUE + "│                Menu                   │");
+    System.out.println(ColorCodes.BLUE + "│         Please Enter an Option:       │");
+    System.out.println(ColorCodes.BLUE + "├───────────────────────────────────────┤");
+    System.out.println(ColorCodes.GREEN + "│ [1] Vehicle By Price                  │");
+    System.out.println(ColorCodes.GREEN + "│ [2] Vehicle By Make and Model         │");
+    System.out.println(ColorCodes.GREEN + "│ [3] Vehicle By Year                   │");
+    System.out.println(ColorCodes.GREEN + "│ [4] Vehicle By Color                  │");
+    System.out.println(ColorCodes.GREEN + "│ [5] Vehicle By Mileage                │");
+    System.out.println(ColorCodes.GREEN + "│ [6] Vehicle By Type                   │");
+    System.out.println(ColorCodes.GREEN + "│ [7] Show All                          │");
+    System.out.println(ColorCodes.GREEN + "│ [8] Add Vehicle                       │");
+    System.out.println(ColorCodes.GREEN + "│ [9] Remove Vehicle                    │");
+    System.out.println(ColorCodes.GREEN + "│ [0] Sell/ Lease Vehicle               │");
+    System.out.println(ColorCodes.RED + "│ [x] Exit                              │");
+    System.out.println(ColorCodes.BLUE + "└───────────────────────────────────────┘" + ColorCodes.RESET);
+  }
 
 
   private void displayVehicles(ArrayList<Vehicle> vehicles) {
@@ -114,8 +118,8 @@ public class UserInterface {
 
   public void processAllVehiclesRequest() {
 
-        displayVehicles(dealership.getInventory());
-    }
+    displayVehicles(dealership.getInventory());
+  }
 
   private void processGetByMakeModelRequest() {
     System.out.print("Enter the make of the vehicle: ");
@@ -136,6 +140,7 @@ public class UserInterface {
     ArrayList<Vehicle> vehiclesByYear = dealership.getVehiclesByYear(year);
     displayVehicles(vehiclesByYear); // Use the display method to print vehicles
   }
+
   private void processGetByColor() {
     System.out.print("Enter the color of the vehicle: ");
     String color = scanner.nextLine().trim(); // Get user input for color
@@ -219,7 +224,52 @@ public class UserInterface {
     }
   }
 
-  // random commit
+  public void processSellOrLeaseVehicleRequest() {
+    System.out.println("Enter the Vin number of vehicle: ");
+    int vin = scanner.nextInt();
+    scanner.nextLine();
+
+    String date = LocalDate.now().toString();
+
+    System.out.println("Enter Name: ");
+    String customerName = scanner.nextLine();
+
+    System.out.println("Enter Email: ");
+    String email = scanner.nextLine();
+
+    System.out.println("Lease or Sale? ");
+    String customerContract = scanner.nextLine();
+
+    // Check if input is neither lease nor sale
+    if (!customerContract.equalsIgnoreCase("lease") && !customerContract.equalsIgnoreCase("sale")) {
+      System.out.println("Invalid option. Please enter 'lease' or 'sale'.");
+      return;
+    }
+
+    Vehicle v = dealership.getInventory().stream()
+            .filter(vehicle -> vehicle.getVin() == vin)
+            .findFirst()
+            .orElse(null);
+
+    if (v == null) {
+      System.out.println("Vehicle not found.");
+      return;
+    }
+
+    double processingFee = v.getPrice() < 10000 ? 295 : 495;
+    System.out.println("Would you like to finance your vehicle? ");
+    String yesOrNo = scanner.nextLine();
+    boolean isFinance = yesOrNo.equalsIgnoreCase("yes");
+
+    Contract contract;
+    if (customerContract.equalsIgnoreCase("lease")) {
+      contract = new LeaseContract(date, customerName, email, v);
+    } else {
+      return;
+    }
+
+    new ContractDataManager().saveContract(contract);
+  }
 
 
 }
